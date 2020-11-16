@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:guess_score/constants/constants.dart';
+import 'package:guess_score/service/init/init.dart';
 import 'package:guess_score/service/team/team_service.dart';
 import 'file:///C:/erkan/projects/guess_score/lib/service/match/match_service.dart';
 
@@ -16,6 +17,8 @@ void main() async {
   TeamService teamService = TeamService();
   List<Team> teamList = await teamService.findByCompetition(2021);
   print(teamList);*/
+  WidgetsFlutterBinding.ensureInitialized();
+  await Init.init();
   runApp(MyApp());
   //print(Constants.LEAGUES.join(', '));
 }

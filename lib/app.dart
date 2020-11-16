@@ -10,7 +10,8 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(body: ResultsPage()),
+      home: Scaffold(
+          appBar: AppBar(title: Text("Erkan Bet")), body: ResultsPage()),
     );
   }
 }

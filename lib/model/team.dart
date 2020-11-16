@@ -20,4 +20,10 @@ class Team{
       crestUrl: json['crestUrl'],
     );
   }
+  Map toJson() => {
+    'id': id,
+    'name': name,
+    'shortName': shortName,
+    'crestUrl': crestUrl
+  };
 }
