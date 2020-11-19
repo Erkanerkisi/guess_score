@@ -8,6 +8,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.5.0-nullsafety.1"
+  bloc:
+    dependency: transitive
+    description:
+      name: bloc
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "6.1.0"
   boolean_selector:
     dependency: transitive
     description:
@@ -15,13 +22,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0-nullsafety.1"
-  cached_network_image:
-    dependency: "direct main"
-    description:
-      name: cached_network_image
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.3.3"
   characters:
     dependency: transitive
     description:
@@ -57,13 +57,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.1"
-  crypto:
-    dependency: transitive
-    description:
-      name: crypto
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.1.5"
   cupertino_icons:
     dependency: "direct main"
     description:
@@ -104,20 +97,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_blurhash:
-    dependency: transitive
+  flutter_bloc:
+    dependency: "direct main"
     description:
-      name: flutter_blurhash
+      name: flutter_bloc
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.5.0"
-  flutter_cache_manager:
-    dependency: transitive
-    description:
-      name: flutter_cache_manager
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.0.0"
+    version: "6.1.1"
   flutter_svg:
     dependency: "direct main"
     description:
@@ -177,13 +163,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.3.0-nullsafety.4"
-  octo_image:
+  nested:
     dependency: transitive
     description:
-      name: octo_image
+      name: nested
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.3.0"
+    version: "0.0.4"
   path:
     dependency: transitive
     description:
@@ -205,13 +191,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.1.4"
-  path_provider:
-    dependency: transitive
-    description:
-      name: path_provider
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.6.24"
   path_provider_linux:
     dependency: transitive
     description:
@@ -219,13 +198,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.0.1+2"
-  path_provider_macos:
-    dependency: transitive
-    description:
-      name: path_provider_macos
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.4+6"
   path_provider_platform_interface:
     dependency: transitive
     description:
@@ -275,13 +247,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.13"
-  rxdart:
+  provider:
     dependency: transitive
     description:
-      name: rxdart
+      name: provider
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.24.1"
+    version: "4.3.2+2"
   shared_preferences:
     dependency: "direct main"
     description:
@@ -336,20 +308,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.8.0-nullsafety.2"
-  sqflite:
-    dependency: transitive
-    description:
-      name: sqflite
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.3.2+1"
-  sqflite_common:
-    dependency: transitive
-    description:
-      name: sqflite_common
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.2+1"
   stack_trace:
     dependency: transitive
     description:
@@ -371,13 +329,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.0-nullsafety.1"
-  synchronized:
-    dependency: transitive
-    description:
-      name: synchronized
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.2.0+2"
   term_glyph:
     dependency: transitive
     description:
@@ -399,13 +350,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.3.0-nullsafety.3"
-  uuid:
-    dependency: transitive
-    description:
-      name: uuid
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "2.2.2"
   vector_math:
     dependency: transitive
     description:
@@ -435,5 +379,5 @@ packages:
     source: hosted
     version: "4.5.1"
 sdks:
-  dart: ">=2.10.2 <=2.11.0-213.1.beta"
-  flutter: ">=1.22.2 <2.0.0"
+  dart: ">=2.10.0-110 <=2.11.0-213.1.beta"
+  flutter: ">=1.18.0-6.0.pre <2.0.0"

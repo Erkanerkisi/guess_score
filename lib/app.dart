@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:guess_score/view/results_page.dart';
+import 'file:///C:/erkan/projects/guess_score/lib/live_results/view/results_page.dart';
 
 class MyApp extends StatefulWidget {
   @override
