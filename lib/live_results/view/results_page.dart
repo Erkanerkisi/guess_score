@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:guess_score/auth/bloc/auth_bloc.dart';
+import 'package:guess_score/auth/bloc/auth_event.dart';
 import 'package:guess_score/constants/constants.dart';
 import 'package:guess_score/live_results/cubit/live_results_cubit.dart';
 import 'package:guess_score/live_results/cubit/live_results_state.dart';
@@ -15,8 +17,25 @@ import 'package:guess_score/utility/utility.dart';
 class ResultsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-        create: (_) => LiveResultsCubit(LiveResultsStateInitial()),
-        child: ResultsView());
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Erkan BET"),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 15),
+            child: Center(
+                child: GestureDetector(
+                    onTap: () {
+                      BlocProvider.of<AuthenticationBloc>(context)
+                          .add(DoUnAuthenticate());
+                    },
+                    child: Icon(Icons.logout))),
+          )
+        ],
+      ),
+      body: BlocProvider(
+          create: (_) => LiveResultsCubit(LiveResultsStateInitial()),
+          child: ResultsView()),
+    );
   }
 }

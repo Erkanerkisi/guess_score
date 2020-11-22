@@ -8,7 +8,11 @@
 .buildlog/
 .history
 .svn/
+
+# Manuel things
 Constants.dart
+google-services.json
+pubspec.lock
 
 # IntelliJ related
 *.iml

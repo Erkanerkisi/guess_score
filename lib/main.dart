@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:guess_score/constants/constants.dart';
 import 'package:guess_score/service/init/init.dart';
@@ -18,6 +19,7 @@ void main() async {
   List<Team> teamList = await teamService.findByCompetition(2021);
   print(teamList);*/
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   await Init.init();
   runApp(MyApp());
   //print(Constants.LEAGUES.join(', '));
