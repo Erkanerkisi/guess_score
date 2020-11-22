@@ -39,26 +39,9 @@ class _SignInViewState extends State<SignInView> {
       ),
     );
   }
-
-  Future<UserCredential> signInWithGoogle() async {
-    // Trigger the authentication flow
-    final GoogleSignInAccount googleUser = await GoogleSignIn().signIn();
-
-    // Obtain the auth details from the request
-    final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
-
-    // Create a new credential
-    final GoogleAuthCredential credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth.accessToken,
-      idToken: googleAuth.idToken,
-    );
-    // Once signed in, return the UserCredential
-    return await FirebaseAuth.instance.signInWithCredential(credential);
-  }
-
   void doAuth(BuildContext ctx) async{
-    UserCredential user = await signInWithGoogle();
-    if(user !=null && user.user.uid !=null ){
+    UserCredential user = await _authenticationBloc.userRepository.signInWithGoogle();
+    if(user != null && user.user.uid !=null ){
       _authenticationBloc.add(DoAuthenticate(user.user.uid));
     }
   }

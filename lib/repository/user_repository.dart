@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:guess_score/model/custom_user.dart';
 
 class UserRepository{
 
@@ -44,4 +45,19 @@ class UserRepository{
     return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
+  CustomUser convertGoogleUsertoCustomUser(User user){
+    return CustomUser.withoutPoint(
+        uid: user.uid,
+        displayName: user.displayName,
+        profileImage: user.photoURL,
+        email: user.email);
+    //google auth olduktan sonra user objesine çevir
+  }
+  checkUserIsExists(CustomUser user){
+    //firestoreda kullanıcı var mı? varsa true
+  }
+  createUser(){
+    //user firestoreda yoksa
+    //firestore user creation with data
+  }
 }

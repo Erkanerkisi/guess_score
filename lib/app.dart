@@ -5,6 +5,7 @@ import 'package:guess_score/repository/user_repository.dart';
 import 'auth/bloc/auth_event.dart';
 import 'auth/bloc/auth_state.dart';
 import 'auth/view/signin_view.dart';
+import 'route/home_page_router.dart';
 import 'live_results/view/results_page.dart';
 
 class MyApp extends StatefulWidget {
@@ -24,7 +25,7 @@ class _MyAppState extends State<MyApp> {
                 cubit: _authenticationBloc,
                 builder: (context, state) {
                   if (state is Authenticated) {
-                    return ResultsPage();
+                    return HomePageRouter();
                   } else if (state is UnAuthenticated) {
                     return SignInView();
                   } else

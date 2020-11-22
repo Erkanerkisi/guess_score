@@ -23,10 +23,10 @@ abstract class LiveResultsState {
 class LiveResultsStateInitial extends LiveResultsState {
   LiveResultsStateInitial()
       : super(
-            firstDate: DateTime.now().subtract(Duration(days: 15)),
-            lastDate: DateTime.now().subtract(Duration(days: 8)),
+            firstDate: DateTime.now(),
+            lastDate: DateTime.now(),
             firstDateStr: Utility.dateToStringWithRequiredFormat(
-                DateTime.now().subtract(Duration(days: 15))),
+                DateTime.now()),
             lastDateStr: Utility.dateToStringWithRequiredFormat(
-                DateTime.now().subtract(Duration(days: 8))));
+                DateTime.now()));
 }
