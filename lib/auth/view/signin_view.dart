@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:guess_score/auth/bloc/auth_bloc.dart';
 import 'package:guess_score/auth/bloc/auth_event.dart';
+import 'package:guess_score/model/custom_user.dart';
 
 class SignInView extends StatefulWidget {
   @override
@@ -41,8 +42,9 @@ class _SignInViewState extends State<SignInView> {
   }
   void doAuth(BuildContext ctx) async{
     UserCredential user = await _authenticationBloc.userRepository.signInWithGoogle();
-    if(user != null && user.user.uid !=null ){
-      _authenticationBloc.add(DoAuthenticate(user.user.uid));
+    CustomUser cuser = await _authenticationBloc.userRepository.convertGoogleUsertoCustomUser(user.user);
+    if(cuser != null && cuser.uid !=null ){
+      _authenticationBloc.add(DoAuthenticate(cuser));
     }
   }
 }

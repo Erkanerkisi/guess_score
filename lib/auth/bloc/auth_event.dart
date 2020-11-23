@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:guess_score/model/custom_user.dart';
 
 class AuthenticationEvent extends Equatable{
   @override
@@ -6,9 +7,9 @@ class AuthenticationEvent extends Equatable{
 }
 
 class DoAuthenticate extends AuthenticationEvent{
- final String userId;
+ final CustomUser cuser;
 
-  DoAuthenticate(this.userId);
+  DoAuthenticate(this.cuser);
 }
 
 class DoUnAuthenticate extends AuthenticationEvent{

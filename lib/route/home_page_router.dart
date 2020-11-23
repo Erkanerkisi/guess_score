@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:guess_score/auth/bloc/auth_bloc.dart';
 import 'package:guess_score/auth/bloc/auth_event.dart';
 import 'package:guess_score/live_results/view/results_page.dart';
-import 'package:guess_score/profile/profile.dart';
+import 'package:guess_score/profile/profile_page.dart';
 
 class HomePageRouter extends StatefulWidget {
   @override
@@ -15,7 +15,7 @@ class _HomePageRouterState extends State<HomePageRouter> {
   final List<Widget> _children = [
     Center(child: Text('Home1')),
     ResultsPage(),
-    Profile()
+    ProfilePage()
   ];
 
   void onTabTapped(int index) {

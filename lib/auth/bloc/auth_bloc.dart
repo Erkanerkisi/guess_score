@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:guess_score/model/custom_user.dart';
 import 'package:guess_score/repository/user_repository.dart';
 
 import 'auth_event.dart';
@@ -16,11 +17,11 @@ class AuthenticationBloc
     if (event is AppStarted) {
       final isSignedIn = await userRepository.isSignedIn();
       if (isSignedIn) {
-        final User user = userRepository.getUser();
-        yield Authenticated(user.uid);
+        final CustomUser cuser = await userRepository.getCurrentUserAndConvertToCustomUser();
+        yield Authenticated(cuser);
       }
     } else if (event is DoAuthenticate) {
-      yield Authenticated(event.userId);
+      yield Authenticated(event.cuser);
     } else if (event is DoUnAuthenticate) {
       yield UnAuthenticated();
     }
