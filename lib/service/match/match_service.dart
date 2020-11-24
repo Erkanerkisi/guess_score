@@ -45,4 +45,19 @@ class MatchService implements IMatchService{
     final json = jsonDecode(response.body);
     return Matches.fromJson(json);
   }
+
+  @override
+  Future<Matches> findByInCompetitionScheduledMatches(List competitions) async{
+    DateTime now = DateTime.now();
+    // TODO: implement findByInCompetitionAndFromDateAndToDate
+    DateTime from = DateTime.now();
+    DateTime to = DateTime.now().add(Duration(days: 10));
+    final response = await _apiClient.requestGet(
+        Constants.BASE_URL + "matches?competitions="+ competitions.join(', ') +"&&dateFrom=" + from.toStringWithMyWay() +
+            "&&dateTo=" + to.toStringWithMyWay() +"&&status=SCHEDULED",
+        Constants.API_HEADERS);
+    final json = jsonDecode(response.body);
+    Matches matches= Matches.fromJson(json);
+    return matches;
+  }
 }
