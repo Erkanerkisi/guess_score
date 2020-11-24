@@ -63,7 +63,7 @@ class _BetPageState extends State<BetPage> {
   }
 
   createBet() {
-    print("creating bet");
+    print("creating beting");
   }
 
   Widget matchRow(Match match) {
