@@ -1,4 +1,5 @@
 class MyBet {
+  String betId;
   String status;
   String uid;
   int estAmount;

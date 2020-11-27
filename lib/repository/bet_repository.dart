@@ -26,7 +26,7 @@ class BetRepository {
 
   Future<void> createBet(CustomUser user, int estAmount, List content) async {
     return betsCollection.add({
-      'status': "W", // John Doe
+      'status': "Waiting", // John Doe
       'uid': user.uid, // Stokes and Sons
       'estAmount': estAmount,
       'cost': 2,

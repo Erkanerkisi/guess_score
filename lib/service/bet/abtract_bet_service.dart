@@ -28,6 +28,7 @@ abstract class IBetService {
     List<MyBet> list = List();
     for (int index = 0; index < qs.docs.length; index++) {
       MyBet mybet = MyBet();
+      mybet.betId = qs.docs[index].id;
       mybet.status = qs.docs[index]["status"];
       mybet.uid = qs.docs[index]["uid"];
       mybet.estAmount = qs.docs[index]["estAmount"];

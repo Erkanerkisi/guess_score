@@ -1,4 +1,4 @@
-enum Status { Waiting, Completed }
+enum Status { Waiting, Won, Lost }
 
 extension EnumValue on Status {
   String getEnumValue() {
