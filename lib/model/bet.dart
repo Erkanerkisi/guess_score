@@ -6,6 +6,6 @@ class Bet {
   int estPoint;
 
   Bet({this.match, this.bet}) {
-    estPoint = bet == 0 ? 2 : 1;
+    estPoint = bet == 0 ? 3 : 2;
   }
 }

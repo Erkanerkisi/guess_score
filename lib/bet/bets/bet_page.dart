@@ -1,11 +1,16 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:guess_score/auth/bloc/auth_bloc.dart';
 import 'package:guess_score/constants/constants.dart';
 import 'package:guess_score/model/bet.dart';
+import 'package:guess_score/model/custom_user.dart';
 import 'package:guess_score/model/match.dart';
 import 'package:guess_score/model/team.dart';
+import 'package:guess_score/service/bet/abtract_bet_service.dart';
+import 'package:guess_score/service/bet/default_bet_service.dart';
 import 'package:guess_score/service/init/init.dart';
 import 'package:guess_score/service/match/match_service.dart';
 import 'package:guess_score/splash/process_indicator_page.dart';
@@ -20,10 +25,12 @@ class _BetPageState extends State<BetPage> {
   MatchService _matchService;
   Map<int, Bet> betsMap = HashMap();
   Future matches;
+  IBetService _betService;
 
   @override
   void initState() {
     _matchService = MatchService();
+    _betService = DefaultBetService();
     matches =
         _matchService.findByInCompetitionScheduledMatches(Constants.LEAGUES);
     teamMap = Init.teamMap;
@@ -57,13 +64,16 @@ class _BetPageState extends State<BetPage> {
             },
           ),
         ),
-        CreateButton(onTap: createBet(), bets: betsMap)
+        CreateButton(
+            onTap: (){createBet(BlocProvider.of<AuthenticationBloc>(context).state.user);},
+            bets: betsMap,
+            estAmount: _betService.calculateEstAmount(betsMap))
       ],
     );
   }
 
-  createBet() {
-    print("creating betings");
+  createBet(CustomUser user) {
+    _betService.createBet(user, betsMap);
   }
 
   Widget matchRow(Match match) {
@@ -258,23 +268,36 @@ class DrawCircleButton extends CircleButton {
 class CreateButton extends StatelessWidget {
   final Function onTap;
   final Map bets;
+  final int estAmount;
 
-  CreateButton({this.onTap, this.bets});
+  CreateButton({this.onTap, this.bets, this.estAmount});
+
+  Function validateButton() {
+    if (bets.isNotEmpty && bets.length > 3)
+      return () {
+        onTap();
+      };
+    else
+      return null;
+  }
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     return Container(
-        height: 50,
+        height: 60,
         width: MediaQuery.of(context).size.width,
         child: RaisedButton(
-          child: Text("Create"),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Text("Create"),
+              Text("Min Match : " + bets.length.toString() + " / 4"),
+              Text("Est Amount: " + estAmount.toString())
+            ],
+          ),
           color: Colors.blue,
-          onPressed: bets.isNotEmpty
-              ? () {
-                  onTap();
-                }
-              : null,
+          onPressed: validateButton(),
         ));
   }
 }

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:guess_score/auth/bloc/auth_bloc.dart';
 import 'package:guess_score/auth/bloc/auth_event.dart';
-import 'package:guess_score/bet/bet_page.dart';
+import 'package:guess_score/bet/mybet/mybets_page.dart';
+import 'file:///C:/erkan/projects/guess_score/lib/bet/bets/bet_page.dart';
 import 'package:guess_score/live_results/view/results_page.dart';
 import 'package:guess_score/profile/profile_page.dart';
 
@@ -14,6 +15,7 @@ class HomePageRouter extends StatefulWidget {
 class _HomePageRouterState extends State<HomePageRouter> {
   int _currentIndex = 0;
   final List<Widget> _children = [
+    MyBetsPage(),
     BetPage(),
     ResultsPage(),
     ProfilePage()
@@ -44,11 +46,14 @@ class _HomePageRouterState extends State<HomePageRouter> {
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
         onTap: onTabTapped, // new
         currentIndex: _currentIndex, // new
         items: [
           new BottomNavigationBarItem(
-              icon: Icon(Icons.monetization_on_sharp), label: "Bets"),
+              icon: Icon(Icons.list), label: "MyBets"),
+          new BottomNavigationBarItem(
+              icon: Icon(Icons.monetization_on_sharp), label: "Bet"),
           new BottomNavigationBarItem(icon: Icon(Icons.live_tv), label: 'Live'),
           new BottomNavigationBarItem(
               icon: Icon(Icons.person_rounded), label: 'Profile')
