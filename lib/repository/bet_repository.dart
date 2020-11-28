@@ -1,10 +1,6 @@
-import 'dart:collection';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:guess_score/model/bet.dart';
 import 'package:guess_score/model/custom_user.dart';
-import 'package:guess_score/service/bet/abtract_bet_service.dart';
-import 'package:guess_score/service/bet/default_bet_service.dart';
 
 class BetRepository {
 

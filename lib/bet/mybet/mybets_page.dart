@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:guess_score/auth/bloc/auth_bloc.dart';
 import 'package:guess_score/auth/bloc/auth_state.dart';
+import 'package:guess_score/bet/bet_detail/bet_detail_page.dart';
 import 'package:guess_score/enum/status_enum.dart';
 import 'package:guess_score/model/mybet.dart';
 import 'package:guess_score/repository/bet_repository.dart';
@@ -52,7 +53,7 @@ class MyBetsPage extends StatelessWidget {
                       ),
                     )
                   ],
-                  rows: createDataRows(list),
+                  rows: createDataRows(list, context),
                 ),
               );
             } else {
@@ -64,11 +65,23 @@ class MyBetsPage extends StatelessWidget {
     );
   }
 
-  List<DataRow> createDataRows(List<MyBet> list) {
+  List<DataRow> createDataRows(List<MyBet> list, BuildContext ctx) {
     var index = 1;
     List<DataRow> rows = List();
     list.forEach((element) {
-      DataRow dataRow = DataRow(cells: List<DataCell>());
+      DataRow dataRow = DataRow(
+        cells: List<DataCell>(),
+        onSelectChanged: (bool selected){
+          if(selected){
+              Navigator.push(
+                ctx,
+                MaterialPageRoute(
+                  builder: (context) => BetDetailPage(myBet : element),
+                ),
+              );
+          }
+        }
+      );
       dataRow.cells.add(DataCell(Center(child: Text(index.toString()))));
       dataRow.cells
           .add(DataCell(Center(child: Text(element.estAmount.toString()))));
