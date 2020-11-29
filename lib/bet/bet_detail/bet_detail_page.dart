@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:guess_score/auth/bloc/auth_bloc.dart';
 import 'package:guess_score/auth/bloc/auth_event.dart';
+import 'package:guess_score/enum/match_status_enum.dart';
 import 'package:guess_score/enum/winner_enum.dart';
 import 'package:guess_score/model/match.dart';
 import 'package:guess_score/model/matches.dart';
@@ -96,10 +97,17 @@ class _BetDetailPageState extends State<BetDetailPage> {
   Widget matchRow(Match match) {
     return Column(
       children: [
+        Text(matchStatusFromString(match.status).getEnumValueAsStringDesc()),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            // Sondaki iconu sabitlemek için kondu.
+            // iconun size ı değişirse bunu da değişmek lazım.
+            SizedBox(
+              width: 24,
+              height: 24,
+            ),
             teamStat(match.competitionId, match.homeTeam),
             teamLogo(match.competitionId, match.homeTeam),
             SizedBox(
@@ -110,37 +118,53 @@ class _BetDetailPageState extends State<BetDetailPage> {
               width: 10,
             ),
             teamLogo(match.competitionId, match.awayTeam),
-            teamStat(match.competitionId, match.awayTeam)
+            teamStat(match.competitionId, match.awayTeam),
+            matchResultIcons(match),
           ],
         ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            GuessRow(match),
+            guessRow(match),
           ],
-        )
+        ),
       ],
     );
   }
 
-  Widget GuessRow(Match match) {
+  Icon matchResultIcons(Match match) {
     int result = convertResultToNumber(match.winner);
-    return Container(
-      color: result != null && result == guesses[match.id] ? Colors.green : result != null && result != guesses[match.id] ? Colors.red : null,
-      child: Text("Guess: " + guesses[match.id].toString()),
-    );
+    return result != null && result == guesses[match.id]
+        ? Icon(
+            Icons.done,
+            color: Colors.green,
+          )
+        : result != null && result != guesses[match.id]
+            ? Icon(
+                Icons.clear,
+                color: Colors.red,
+              )
+            : Icon(
+                Icons.access_time_outlined,
+                color: Colors.blue,
+              );
   }
+
+  Widget guessRow(Match match) {
+    return Text("Guess: " + guesses[match.id].toString());
+  }
+
   //Burayı yeniden düzenle
-  int convertResultToNumber(String result){
+  int convertResultToNumber(String result) {
     int numberResult;
-    if(result == WinnerEnum.DRAW.getEnumValue()){
+    if (result == WinnerEnum.DRAW.getEnumValue()) {
       numberResult = 0;
-    }else if(result == WinnerEnum.HOME_TEAM.getEnumValue()){
+    } else if (result == WinnerEnum.HOME_TEAM.getEnumValue()) {
       numberResult = 1;
-    }else if(result == WinnerEnum.AWAY_TEAM.getEnumValue()){
+    } else if (result == WinnerEnum.AWAY_TEAM.getEnumValue()) {
       numberResult = 2;
-    }else{
+    } else {
       //result = null henüz başlamadı demektir.
       numberResult = null;
     }

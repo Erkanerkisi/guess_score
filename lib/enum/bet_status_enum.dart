@@ -1,6 +1,6 @@
-enum Status { Waiting, Won, Lost }
+enum BetStatus { Waiting, Won, Lost }
 
-extension EnumValue on Status {
+extension EnumValue on BetStatus {
   String getEnumValue() {
     return this.toString().split('.').last;
   }

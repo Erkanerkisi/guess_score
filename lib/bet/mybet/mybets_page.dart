@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:guess_score/auth/bloc/auth_bloc.dart';
 import 'package:guess_score/auth/bloc/auth_state.dart';
 import 'package:guess_score/bet/bet_detail/bet_detail_page.dart';
-import 'package:guess_score/enum/status_enum.dart';
+import 'package:guess_score/enum/bet_status_enum.dart';
 import 'package:guess_score/model/mybet.dart';
 import 'package:guess_score/repository/bet_repository.dart';
 import 'package:guess_score/service/bet/abtract_bet_service.dart';
@@ -109,12 +109,12 @@ class MyBetsPage extends StatelessWidget {
           .add(DataCell(Center(child: Text(element.estAmount.toString()))));
       dataRow.cells.add(DataCell(Center(child: Text(element.cost.toString()))));
       dataRow.cells.add(DataCell(Center(
-          child: element.status == Status.Waiting.getEnumValue()
+          child: element.status == BetStatus.Waiting.getEnumValue()
               ? Icon(
                   Icons.timer,
                   color: Colors.blue,
                 )
-              : element.status == Status.Won.getEnumValue()
+              : element.status == BetStatus.Won.getEnumValue()
                   ? Icon(
                       Icons.done,
                       color: Colors.green,
