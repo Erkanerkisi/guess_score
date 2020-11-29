@@ -1,19 +1,23 @@
+import 'dart:collection';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:guess_score/auth/bloc/auth_bloc.dart';
+import 'package:guess_score/auth/bloc/auth_event.dart';
+import 'package:guess_score/enum/winner_enum.dart';
 import 'package:guess_score/model/match.dart';
 import 'package:guess_score/model/matches.dart';
 import 'package:guess_score/model/mybet.dart';
 import 'package:guess_score/model/team.dart';
-import 'package:guess_score/service/bet/abtract_bet_service.dart';
-import 'package:guess_score/service/bet/default_bet_service.dart';
 import 'package:guess_score/service/init/init.dart';
 import 'package:guess_score/service/match/abstract_match_service.dart';
 import 'package:guess_score/service/match/match_service.dart';
 import 'package:guess_score/utility/utility.dart';
 
 class BetDetailPage extends StatefulWidget {
-  MyBet myBet;
+  final MyBet myBet;
 
   BetDetailPage({this.myBet});
 
@@ -27,9 +31,14 @@ class _BetDetailPageState extends State<BetDetailPage> {
   Matches matches;
   IMatchService _matchService;
   Map<int, Map<int, Team>> teamMap;
+  Map<int, int> guesses;
 
   @override
   void initState() {
+    guesses = HashMap();
+    widget.myBet.content.forEach((element) {
+      guesses.putIfAbsent(element.matchid, () => element.guess);
+    });
     _matchIdList = widget.myBet.content.map((e) => e.matchid).toList();
     _matchService = MatchService();
     teamMap = Init.teamMap;
@@ -38,6 +47,21 @@ class _BetDetailPageState extends State<BetDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Erkan BET"),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 15),
+            child: Center(
+                child: GestureDetector(
+                    onTap: () {
+                      BlocProvider.of<AuthenticationBloc>(context)
+                          .add(DoUnAuthenticate());
+                    },
+                    child: Icon(Icons.logout))),
+          )
+        ],
+      ),
       body: Column(
         children: [
           Expanded(
@@ -50,11 +74,11 @@ class _BetDetailPageState extends State<BetDetailPage> {
                       thickness: 2,
                       color: Colors.black,
                     ),
-                    itemCount: snapshot.data.count,
+                    itemCount: snapshot.data.length,
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: EdgeInsets.all(15.0),
-                        child: matchRow(snapshot.data.matchList[index]),
+                        child: matchRow(snapshot.data[index]),
                       );
                     },
                   );
@@ -88,9 +112,39 @@ class _BetDetailPageState extends State<BetDetailPage> {
             teamLogo(match.competitionId, match.awayTeam),
             teamStat(match.competitionId, match.awayTeam)
           ],
+        ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            GuessRow(match),
+          ],
         )
       ],
     );
+  }
+
+  Widget GuessRow(Match match) {
+    int result = convertResultToNumber(match.winner);
+    return Container(
+      color: result != null && result == guesses[match.id] ? Colors.green : result != null && result != guesses[match.id] ? Colors.red : null,
+      child: Text("Guess: " + guesses[match.id].toString()),
+    );
+  }
+  //Burayı yeniden düzenle
+  int convertResultToNumber(String result){
+    int numberResult;
+    if(result == WinnerEnum.DRAW.getEnumValue()){
+      numberResult = 0;
+    }else if(result == WinnerEnum.HOME_TEAM.getEnumValue()){
+      numberResult = 1;
+    }else if(result == WinnerEnum.AWAY_TEAM.getEnumValue()){
+      numberResult = 2;
+    }else{
+      //result = null henüz başlamadı demektir.
+      numberResult = null;
+    }
+    return numberResult;
   }
 
   Widget teamStat(int league, Team team) {

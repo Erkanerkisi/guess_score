@@ -23,38 +23,60 @@ class MyBetsPage extends StatelessWidget {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               List<MyBet> list = _betService.getMyBetList(snapshot.data);
-              return SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: DataTable(
-                  columnSpacing: 40,
-                  columns: [
-                    DataColumn(
-                      label: Text(
-                        'No',
-                        style: TextStyle(fontStyle: FontStyle.italic),
-                      ),
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: DataTable(
+                      showCheckboxColumn: false,
+                      //columnSpacing: 40,
+                      columns: [
+                        DataColumn(
+                          label: Text(
+                            'No',
+                            style: TextStyle(fontStyle: FontStyle.italic),
+                          ),
+                        ),
+                        DataColumn(
+                          label: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Estimated',
+                                style: TextStyle(fontStyle: FontStyle.italic),
+                              ),Text(
+                                'points',
+                                style: TextStyle(fontStyle: FontStyle.italic),
+                              ),
+                            ],
+                          ),
+                        ),
+                        DataColumn(
+                          label: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Cost',
+                                style: TextStyle(fontStyle: FontStyle.italic),
+                              ),Text(
+                                'points',
+                                style: TextStyle(fontStyle: FontStyle.italic),
+                              ),
+                            ],
+                          ),
+                        ),
+                        DataColumn(
+                          label: Text(
+                            'Status',
+                            style: TextStyle(fontStyle: FontStyle.italic),
+                          ),
+                        )
+                      ],
+                      rows: createDataRows(list, context),
                     ),
-                    DataColumn(
-                      label: Text(
-                        'Estimated points',
-                        style: TextStyle(fontStyle: FontStyle.italic),
-                      ),
-                    ),
-                    DataColumn(
-                      label: Text(
-                        'Cost points',
-                        style: TextStyle(fontStyle: FontStyle.italic),
-                      ),
-                    ),
-                    DataColumn(
-                      label: Text(
-                        'Status',
-                        style: TextStyle(fontStyle: FontStyle.italic),
-                      ),
-                    )
-                  ],
-                  rows: createDataRows(list, context),
-                ),
+                  ),
+                ],
               );
             } else {
               return CircularProgressIndicatorPage();
