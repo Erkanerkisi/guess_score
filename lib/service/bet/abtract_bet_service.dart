@@ -20,6 +20,11 @@ abstract class IBetService {
 
   int calculateEstAmount(Map bet);
 
+  Future<QuerySnapshot> findBetsByUid(CustomUser user) async {
+    await checkBetResults(user);
+    return _betRepository.findBetsByUid(user);
+  }
+
   createBet(CustomUser user, Map<int, Bet> bet) {
     final List content = List();
     bet.forEach((key, value) {

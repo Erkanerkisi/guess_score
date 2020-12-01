@@ -19,7 +19,7 @@ class MyBetsPage extends StatelessWidget {
     return BlocBuilder<AuthenticationBloc, AuthenticationState>(
       builder: (context, state) {
         return FutureBuilder(
-          future: BetRepository().findBetsByUid(state.user),
+          future: _betService.findBetsByUid(state.user),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               List<MyBet> list = _betService.getMyBetList(snapshot.data);
