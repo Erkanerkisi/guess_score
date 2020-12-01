@@ -29,8 +29,8 @@ class FirebaseMatchService {
 
       match.competitionId = qs.docs[index]["competitionId"];
       match.score = Score();
-      match.score.awayTeamScore = qs.docs[index]["score"][0];
-      match.score.homeTeamScore = qs.docs[index]["score"][1];
+      match.score.homeTeamScore = qs.docs[index]["score"][0];
+      match.score.awayTeamScore = qs.docs[index]["score"][1];
 
       list.add(match);
     }

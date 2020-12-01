@@ -134,7 +134,7 @@ class _BetDetailPageState extends State<BetDetailPage> {
   }
 
   Icon matchResultIcons(Match match) {
-    int result = convertResultToNumber(match.winner);
+    int result = Utility.convertResultToNumber(match.winner);
     return result != null && result == guesses[match.id]
         ? Icon(
             Icons.done,
@@ -155,21 +155,7 @@ class _BetDetailPageState extends State<BetDetailPage> {
     return Text("Guess: " + guesses[match.id].toString());
   }
 
-  //Burayı yeniden düzenle
-  int convertResultToNumber(String result) {
-    int numberResult;
-    if (result == WinnerEnum.DRAW.getEnumValue()) {
-      numberResult = 0;
-    } else if (result == WinnerEnum.HOME_TEAM.getEnumValue()) {
-      numberResult = 1;
-    } else if (result == WinnerEnum.AWAY_TEAM.getEnumValue()) {
-      numberResult = 2;
-    } else {
-      //result = null henüz başlamadı demektir.
-      numberResult = null;
-    }
-    return numberResult;
-  }
+
 
   Widget teamStat(int league, Team team) {
     return Expanded(

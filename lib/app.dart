@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:guess_score/auth/bloc/auth_bloc.dart';
 import 'package:guess_score/repository/user_repository.dart';
+import 'package:guess_score/service/bet/abtract_bet_service.dart';
+import 'package:guess_score/service/bet/default_bet_service.dart';
 import 'auth/bloc/auth_event.dart';
 import 'auth/bloc/auth_state.dart';
 import 'auth/view/signin_view.dart';
@@ -15,7 +17,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   AuthenticationBloc _authenticationBloc;
-
+  IBetService _betService = DefaultBetService();
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -25,6 +27,7 @@ class _MyAppState extends State<MyApp> {
                 cubit: _authenticationBloc,
                 builder: (context, state) {
                   if (state is Authenticated) {
+                    _betService.checkBetResults(state.user);
                     return HomePageRouter();
                   } else if (state is UnAuthenticated) {
                     return SignInView();

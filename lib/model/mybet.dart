@@ -6,10 +6,11 @@ class MyBet {
   int cost;
   List<Content> content;
 
-  MyBet({this.status, this.uid, this.estAmount, this.cost, this.content});
+  MyBet({this.betId,this.status, this.uid, this.estAmount, this.cost, this.content});
 
   factory MyBet.fromJson(Map<String, dynamic> json) {
     return MyBet(
+      betId:json["betId"],
       status: json['status'],
       uid: json['uid'],
       estAmount: json['estAmount'],

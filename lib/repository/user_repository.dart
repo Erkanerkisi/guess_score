@@ -78,4 +78,13 @@ class UserRepository {
         .set({'point': 100}).then((value) => user.point = 100);
     return user;
   }
+
+  void updateUserPoint(CustomUser cs, int point) async{
+    CustomUser cu = await findCustomUserByUidOnFirestore(cs);
+    return usersCollection
+        .doc(cs.uid)
+        .update({'point': cu.point + point})
+        .then((value) => print("user point updated"))
+        .catchError((error) => print("Failed to update user point: $error"));
+  }
 }

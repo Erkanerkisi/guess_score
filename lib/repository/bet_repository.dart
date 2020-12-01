@@ -1,16 +1,18 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:guess_score/enum/bet_status_enum.dart';
 import 'package:guess_score/model/custom_user.dart';
+import 'package:guess_score/model/mybet.dart';
 
 class BetRepository {
 
   final CollectionReference betsCollection = FirebaseFirestore.instance.collection("bets");
 
   Future<QuerySnapshot> findBetsByUidAndStatus(CustomUser user,
-      String status) async {
+      BetStatus status) async {
     return await betsCollection
         .where('uid', isEqualTo: user.uid)
-        .where('status', isEqualTo: status)
+        .where('status', isEqualTo: status.getEnumValue())
         .get();
   }
 
@@ -29,5 +31,12 @@ class BetRepository {
       'content': content
     }).then((value) => print("Bet Added"))
         .catchError((error) => print("Failed to add bet: $error"));
+  }
+  updateStatus(String betId, BetStatus betStatus){
+    return betsCollection
+        .doc(betId)
+        .update({'status': betStatus.getEnumValue()})
+        .then((value) => print("bet status updated"))
+        .catchError((error) => print("Failed to update bet status: $error"));
   }
 }
