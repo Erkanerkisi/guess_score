@@ -6,10 +6,11 @@ import 'package:guess_score/constants/constants.dart';
 import 'package:guess_score/enum/match_status_enum.dart';
 import 'package:guess_score/live_results/cubit/live_results_cubit.dart';
 import 'package:guess_score/live_results/cubit/live_results_state.dart';
+import 'package:guess_score/live_results/view/custom_animated_list.dart';
 import 'package:guess_score/model/match.dart';
+import 'package:guess_score/model/score.dart';
 import 'package:guess_score/model/team.dart';
 import 'package:guess_score/service/init/init.dart';
-import 'package:guess_score/service/match/match_service.dart';
 import 'package:guess_score/utility/utility.dart';
 
 class ResultsView extends StatefulWidget {
@@ -19,6 +20,9 @@ class ResultsView extends StatefulWidget {
 
 class _ResultsViewState extends State<ResultsView> {
   Map<int, Map<int, Team>> teamMap;
+  final GlobalKey<AnimatedListState> listKey = GlobalKey<AnimatedListState>();
+  List<Match> animatedList = [];
+  int _index = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -80,6 +84,7 @@ class _ResultsViewState extends State<ResultsView> {
                     child: RaisedButton(
                       child: Text("Filter"),
                       onPressed: () {
+                        //addItem(Match(id: 1,status: "SCHEDULED",awayTeam: Team(id: 328,name: "ere"),homeTeam: Team(id: 62,name: "ever"),score: Score(),winner: "HOME_TEAM",competitionId: 2021));
                         context.read<LiveResultsCubit>().setMatches();
                         setState(() {});
                       },
@@ -91,8 +96,11 @@ class _ResultsViewState extends State<ResultsView> {
             child: FutureBuilder(
               future: state.matches,
               builder: (context, snapshot) {
-                if (snapshot.hasData)
-                  return ListView.separated(
+                if (snapshot.hasData) {
+                  return CustomAnimatedList(
+                      teamMap: teamMap, animatedList: snapshot.data.matchList);
+                }
+                /*return ListView.separated(
                     separatorBuilder: (context, index) => Divider(
                       thickness: 2,
                       color: Colors.black,
@@ -104,7 +112,7 @@ class _ResultsViewState extends State<ResultsView> {
                         child: matchRow(snapshot.data.matchList[index]),
                       );
                     },
-                  );
+                  );*/
                 else {
                   return Center(child: CircularProgressIndicator());
                 }

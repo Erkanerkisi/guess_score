@@ -13,7 +13,7 @@ class HomePageRouter extends StatefulWidget {
 }
 
 class _HomePageRouterState extends State<HomePageRouter> {
-  int _currentIndex = 3;
+  int _currentIndex = 2;
   final List<Widget> _children = [
     MyBetsPage(),
     BetPage(),
