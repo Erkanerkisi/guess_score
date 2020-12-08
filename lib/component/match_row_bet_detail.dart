@@ -4,22 +4,25 @@ import 'package:guess_score/component/team_logo.dart';
 import 'package:guess_score/component/team_stat.dart';
 import 'package:guess_score/enum/match_status_enum.dart';
 import 'package:guess_score/model/match.dart';
+import 'package:guess_score/utility/utility.dart';
 
-class MatchRow extends StatefulWidget {
+class MatchRowBetDetail extends StatefulWidget {
   final Map _teamMap;
+  final Map _guessesMap;
   final Match _match;
   final int _index;
 
-  MatchRow({@required Map teamMap, @required Match match, int index})
+  MatchRowBetDetail({@required Map teamMap,@required Map guessesMap, @required Match match, int index})
       : _match = match,
         _teamMap = teamMap,
+        _guessesMap = guessesMap,
         _index = index;
 
   @override
-  _MatchRowState createState() => _MatchRowState();
+  _MatchRowBetDetailState createState() => _MatchRowBetDetailState();
 }
 
-class _MatchRowState extends State<MatchRow> with TickerProviderStateMixin {
+class _MatchRowBetDetailState extends State<MatchRowBetDetail> with TickerProviderStateMixin {
   AnimationController controller;
   Animation<Offset> offsetFloat;
 
@@ -49,7 +52,7 @@ class _MatchRowState extends State<MatchRow> with TickerProviderStateMixin {
   }
 
   @override
-  void didUpdateWidget(covariant MatchRow oldWidget) {
+  void didUpdateWidget(covariant MatchRowBetDetail oldWidget) {
     super.didUpdateWidget(oldWidget);
     // Mutlaka match modelinde olduğu gibi Equatable paketini extend etmek lazım
     // yoksa her defa birbirinden farklı olup koşula girer.
@@ -65,40 +68,64 @@ class _MatchRowState extends State<MatchRow> with TickerProviderStateMixin {
     controller.dispose();
   }
 
+  Icon matchResultIcons(Match match) {
+    int result = Utility.convertResultToNumber(match.winner);
+    return result != null && result == widget._guessesMap[match.id]
+        ? Icon(
+      Icons.done,
+      color: Colors.green,
+    )
+        : result != null && result != widget._guessesMap[match.id]
+        ? Icon(
+      Icons.clear,
+      color: Colors.red,
+    )
+        : Icon(
+      Icons.access_time_outlined,
+      color: Colors.blue,
+    );
+  }
+
+  Widget guessRow(Match match) {
+    return Text("Guess: " + widget._guessesMap[match.id].toString());
+  }
+
   @override
   Widget build(BuildContext context) {
     return SlideTransition(
       position: offsetFloat,
       child: Column(
         children: [
+          Text(matchStatusFromString(widget._match.status).getEnumValueAsStringDesc()),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              // Sondaki iconu sabitlemek için kondu.
+              // iconun size ı değişirse bunu da değişmek lazım.
+              SizedBox(
+                width: 24,
+                height: 24,
+              ),
               TeamStat(
                 teamMap: widget._teamMap,
                 leagueId: widget._match.competitionId,
                 team: widget._match.homeTeam,
               ),
-              //teamStat(match.competitionId, match.homeTeam),
-              //teamLogo(match.competitionId, match.homeTeam),
               TeamLogo(
                 teamMap: widget._teamMap,
                 leagueId: widget._match.competitionId,
                 team: widget._match.homeTeam,
               ),
-              //teamStat(match.competitionId, match.homeTeam),
               SizedBox(
                 width: 10,
               ),
-              //scoreStat(match),
               ScoreStat(
                 match: widget._match,
               ),
               SizedBox(
                 width: 10,
               ),
-              //teamLogo(match.competitionId, match.awayTeam),
               TeamLogo(
                 teamMap: widget._teamMap,
                 leagueId: widget._match.competitionId,
@@ -111,11 +138,16 @@ class _MatchRowState extends State<MatchRow> with TickerProviderStateMixin {
                 leagueId: widget._match.competitionId,
                 team: widget._match.awayTeam,
               ),
-              //teamStat(match.competitionId, match.homeTeam),
+              matchResultIcons(widget._match),
             ],
           ),
-          Text(matchStatusFromString(widget._match.status)
-              .getEnumValueAsStringDesc())
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              guessRow(widget._match),
+            ],
+          ),
         ],
       ),
     );
