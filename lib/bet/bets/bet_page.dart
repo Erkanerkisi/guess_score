@@ -157,9 +157,7 @@ class _BetPageState extends State<BetPage> {
         SizedBox(
           width: 30,
           height: 30,
-          child: SvgPicture.network(
-            teamMap[competitionId][team.id].crestUrl,
-          ),
+          child: team.logo,
         ),
       ],
     );
