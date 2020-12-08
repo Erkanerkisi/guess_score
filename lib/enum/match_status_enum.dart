@@ -1,4 +1,4 @@
-enum MatchStatus {IN_PLAY, FINISHED, SCHEDULED }
+enum MatchStatus {IN_PLAY, FINISHED, SCHEDULED, PAUSED,POSTPONED }
 
 extension EnumValue on MatchStatus {
   String getEnumValue() {
@@ -11,6 +11,8 @@ extension EnumValueAsStringDescription on MatchStatus {
     if(this == MatchStatus.FINISHED) return "Finished";
     else if(this == MatchStatus.IN_PLAY) return "In Play";
     else if(this == MatchStatus.SCHEDULED) return "Scheduled";
+    else if(this == MatchStatus.PAUSED) return "Paused";
+    else if(this == MatchStatus.POSTPONED) return "Postponed";
     else return this.getEnumValue();
   }
 }

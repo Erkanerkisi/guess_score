@@ -1,16 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:guess_score/component/match_row.dart';
 import 'package:guess_score/constants/constants.dart';
-import 'package:guess_score/enum/match_status_enum.dart';
 import 'package:guess_score/live_results/cubit/live_results_cubit.dart';
 import 'package:guess_score/live_results/cubit/live_results_state.dart';
-import 'package:guess_score/model/match.dart';
 import 'package:guess_score/model/team.dart';
 import 'package:guess_score/service/init/init.dart';
-import 'package:guess_score/service/match/match_service.dart';
-import 'package:guess_score/utility/utility.dart';
 
 class ResultsView extends StatefulWidget {
   @override
@@ -92,17 +88,16 @@ class _ResultsViewState extends State<ResultsView> {
               future: state.matches,
               builder: (context, snapshot) {
                 if (snapshot.hasData)
-                  return ListView.separated(
-                    separatorBuilder: (context, index) => Divider(
-                      thickness: 2,
-                      color: Colors.black,
-                    ),
+                  return ListView.builder(
                     itemCount: snapshot.data.count,
                     itemBuilder: (context, index) {
                       return Padding(
-                        padding: EdgeInsets.all(15.0),
-                        child: matchRow(snapshot.data.matchList[index]),
-                      );
+                          padding: EdgeInsets.all(15.0),
+                          child: MatchRow(
+                            match: snapshot.data.matchList[index],
+                            teamMap: teamMap,
+                            index : index
+                          ));
                     },
                   );
                 else {
@@ -114,82 +109,6 @@ class _ResultsViewState extends State<ResultsView> {
         ],
       );
     });
-  }
-
-  Widget matchRow(Match match) {
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            teamStat(match.competitionId, match.homeTeam),
-            teamLogo(match.competitionId, match.homeTeam),
-            SizedBox(
-              width: 10,
-            ),
-            scoreStat(match),
-            SizedBox(
-              width: 10,
-            ),
-            teamLogo(match.competitionId, match.awayTeam),
-            teamStat(match.competitionId, match.awayTeam)
-          ],
-        ),
-        Text(matchStatusFromString(match.status).getEnumValueAsStringDesc())
-      ],
-    );
-  }
-
-  Widget teamStat(int league, Team team) {
-    return Expanded(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Column(
-            children: [
-              Text(
-                teamMap[league][team.id].shortName,
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 14),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget scoreStat(Match match) {
-    String home = Utility.getValue(match.score.homeTeamScore);
-    String away = Utility.getValue(match.score.awayTeamScore);
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Text(
-          "$home - $away",
-          style: TextStyle(fontSize: 18),
-        )
-      ],
-    );
-  }
-
-  Widget teamLogo(int competitionId, Team team) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        SizedBox(
-          width: 30,
-          height: 30,
-          child: SvgPicture.network(
-            teamMap[competitionId][team.id].crestUrl,
-          ),
-        ),
-      ],
-    );
   }
 
   @override

@@ -1,7 +1,8 @@
+import 'package:equatable/equatable.dart';
 import 'package:guess_score/model/score.dart';
 import 'package:guess_score/model/team.dart';
 
-class Match{
+class Match extends Equatable{
   int id;
   Team homeTeam;
   Team awayTeam;
@@ -23,5 +24,9 @@ class Match{
       competitionId: json['competition']['id']
     );
   }
+
+  @override
+  // TODO: implement props
+  List<Object> get props => [id];
 }
 
