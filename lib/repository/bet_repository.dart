@@ -32,6 +32,7 @@ class BetRepository {
     }).then((value) => print("Bet Added"))
         .catchError((error) => print("Failed to add bet: $error"));
   }
+
   updateStatus(String betId, BetStatus betStatus){
     return betsCollection
         .doc(betId)
@@ -39,4 +40,5 @@ class BetRepository {
         .then((value) => print("bet status updated"))
         .catchError((error) => print("Failed to update bet status: $error"));
   }
+
 }

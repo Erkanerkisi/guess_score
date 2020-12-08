@@ -33,7 +33,10 @@ abstract class IBetService {
       map.putIfAbsent("guess", () => value.bet);
       content.add(map);
     });
+    //Cost standart 2, değiştirmek istersek burdan parametrik yapalım.
+
     _betRepository.createBet(user, calculateEstAmount(bet), content);
+    _userRepository.updateUserPoint(user, -2);
   }
 
   List<MyBet> getMyBetList(QuerySnapshot qs) {
