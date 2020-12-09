@@ -6,9 +6,9 @@ import 'package:guess_score/service/team/team_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Init {
-  static Map<int, Map<int,Team>> teamMap = Map();
 
-  static init() async {
+  Future<Map> init() async {
+    Map<int, Map<int,Team>> teamMap = Map();
     final prefs = await SharedPreferences.getInstance();
     for (int i in Constants.LEAGUES) {
       if (prefs.get(i.toString()) == null) {
@@ -22,5 +22,6 @@ class Init {
         teamMap.putIfAbsent(i, () => map2);
       }
     }
+    return teamMap;
   }
 }

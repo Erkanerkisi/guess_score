@@ -2,11 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:guess_score/component/match_row.dart';
+import 'package:guess_score/component/root_provider.dart';
 import 'package:guess_score/constants/constants.dart';
 import 'package:guess_score/live_results/cubit/live_results_cubit.dart';
 import 'package:guess_score/live_results/cubit/live_results_state.dart';
 import 'package:guess_score/model/team.dart';
-import 'package:guess_score/service/init/init.dart';
 
 class ResultsView extends StatefulWidget {
   @override
@@ -14,7 +14,6 @@ class ResultsView extends StatefulWidget {
 }
 
 class _ResultsViewState extends State<ResultsView> {
-  Map<int, Map<int, Team>> teamMap;
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +94,7 @@ class _ResultsViewState extends State<ResultsView> {
                           padding: EdgeInsets.all(15.0),
                           child: MatchRow(
                             match: snapshot.data.matchList[index],
-                            teamMap: teamMap,
+                            teamMap: RootProvider.of(context),
                             index : index
                           ));
                     },
@@ -109,10 +108,5 @@ class _ResultsViewState extends State<ResultsView> {
         ],
       );
     });
-  }
-
-  @override
-  void initState() {
-    teamMap = Init.teamMap;
   }
 }

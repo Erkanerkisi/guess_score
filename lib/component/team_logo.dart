@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:guess_score/component/root_provider.dart';
 import 'package:guess_score/model/team.dart';
 
 class TeamLogo extends StatelessWidget {
@@ -21,9 +22,7 @@ class TeamLogo extends StatelessWidget {
         SizedBox(
           width: 30,
           height: 30,
-          child: SvgPicture.network(
-            _teamMap[_leagueId][_team.id].crestUrl,
-          ),
+          child: _teamMap[_leagueId][_team.id].logo,
         ),
       ],
     );

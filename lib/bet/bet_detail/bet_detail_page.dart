@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:guess_score/auth/bloc/auth_bloc.dart';
 import 'package:guess_score/auth/bloc/auth_event.dart';
 import 'package:guess_score/component/match_row_bet_detail.dart';
+import 'package:guess_score/component/root_provider.dart';
 import 'package:guess_score/model/matches.dart';
 import 'package:guess_score/model/mybet.dart';
 import 'package:guess_score/model/team.dart';
@@ -27,7 +28,6 @@ class _BetDetailPageState extends State<BetDetailPage> {
   List<int> _matchIdList;
   Matches matches;
   IMatchService _matchService;
-  Map<int, Map<int, Team>> teamMap;
   Map<int, int> guesses;
 
   @override
@@ -38,7 +38,6 @@ class _BetDetailPageState extends State<BetDetailPage> {
     });
     _matchIdList = widget.myBet.content.map((e) => e.matchid).toList();
     _matchService = MatchService();
-    teamMap = Init.teamMap;
   }
 
   @override
@@ -73,7 +72,7 @@ class _BetDetailPageState extends State<BetDetailPage> {
                           padding: EdgeInsets.all(15.0),
                           child: MatchRowBetDetail(
                               match: snapshot.data[index],
-                              teamMap: teamMap,
+                              teamMap: RootProvider.of(context),
                               guessesMap: guesses,
                               index: index));
                     },

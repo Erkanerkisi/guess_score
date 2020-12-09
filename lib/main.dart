@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:guess_score/constants/constants.dart';
 import 'package:guess_score/service/init/init.dart';
 import 'package:guess_score/service/team/team_service.dart';
+import 'component/root_provider.dart';
 import 'file:///C:/erkan/projects/guess_score/lib/service/match/match_service.dart';
 
 import 'app.dart';
@@ -20,7 +21,6 @@ void main() async {
   print(teamList);*/
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  await Init.init();
-  runApp(MyApp());
+  runApp(RootProvider(teamMap: await Init().init(), child: MyApp()));
   //print(Constants.LEAGUES.join(', '));
 }

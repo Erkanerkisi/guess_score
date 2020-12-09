@@ -2,8 +2,13 @@ import 'dart:collection';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:guess_score/auth/bloc/auth_bloc.dart';
+import 'package:guess_score/component/away_circle_button.dart';
+import 'package:guess_score/component/create_button.dart';
+import 'package:guess_score/component/draw_circle_button.dart';
+import 'package:guess_score/component/home_circle_button.dart';
+import 'package:guess_score/component/root_provider.dart';
+import 'package:guess_score/component/team_logo.dart';
 import 'package:guess_score/constants/constants.dart';
 import 'package:guess_score/model/bet.dart';
 import 'package:guess_score/model/custom_user.dart';
@@ -11,7 +16,6 @@ import 'package:guess_score/model/match.dart';
 import 'package:guess_score/model/team.dart';
 import 'package:guess_score/service/bet/abtract_bet_service.dart';
 import 'package:guess_score/service/bet/default_bet_service.dart';
-import 'package:guess_score/service/init/init.dart';
 import 'package:guess_score/service/match/match_service.dart';
 import 'package:guess_score/splash/process_indicator_page.dart';
 
@@ -21,7 +25,6 @@ class BetPage extends StatefulWidget {
 }
 
 class _BetPageState extends State<BetPage> {
-  Map<int, Map<int, Team>> teamMap;
   MatchService _matchService;
   Map<int, Bet> betsMap = HashMap();
   Future matches;
@@ -33,7 +36,6 @@ class _BetPageState extends State<BetPage> {
     _betService = DefaultBetService();
     matches =
         _matchService.findByInCompetitionScheduledMatches(Constants.LEAGUES);
-    teamMap = Init.teamMap;
   }
 
   @override
@@ -105,7 +107,11 @@ class _BetPageState extends State<BetPage> {
         children: [
           Column(
             children: [
-              teamLogo(league, team),
+              TeamLogo(
+                teamMap: RootProvider.of(context),
+                leagueId: league,
+                team: team,
+              ),
               teamWord(league, team),
             ],
           ),
@@ -116,7 +122,7 @@ class _BetPageState extends State<BetPage> {
 
   Widget teamWord(int league, Team team) {
     return Text(
-      teamMap[league][team.id].shortName,
+      RootProvider.of(context)[league][team.id].shortName,
       textAlign: TextAlign.center,
       style: TextStyle(fontSize: 14),
     );
@@ -157,7 +163,7 @@ class _BetPageState extends State<BetPage> {
         SizedBox(
           width: 30,
           height: 30,
-          child: team.logo,
+          child: RootProvider.of(context)[competitionId][team.id].logo,
         ),
       ],
     );
@@ -186,116 +192,5 @@ class _BetPageState extends State<BetPage> {
     return SizedBox(
       width: 10,
     );
-  }
-}
-
-abstract class CircleButton extends StatelessWidget {
-  final GestureTapCallback onTap;
-  final Bet bet;
-
-  const CircleButton({Key key, this.onTap, this.bet}) : super(key: key);
-
-  Color getColor();
-
-  Text getText();
-
-  @override
-  Widget build(BuildContext context) {
-    double size = 35.0;
-
-    return new InkResponse(
-      onTap: onTap,
-      child: new Container(
-        width: size,
-        height: size,
-        decoration: new BoxDecoration(
-          color: getColor(),
-          shape: BoxShape.circle,
-        ),
-        child: Center(child: getText()),
-      ),
-    );
-  }
-}
-
-class HomeCircleButton extends CircleButton {
-  HomeCircleButton(GestureTapCallback onTap, Bet bet)
-      : super(onTap: onTap, bet: bet);
-
-  @override
-  Color getColor() {
-    return bet != null && bet.bet == 1 ? Colors.blue : Colors.grey;
-  }
-
-  @override
-  Text getText() {
-    return Text("1");
-  }
-}
-
-class AwayCircleButton extends CircleButton {
-  AwayCircleButton(GestureTapCallback onTap, Bet bet)
-      : super(onTap: onTap, bet: bet);
-
-  @override
-  Color getColor() {
-    return bet != null && bet.bet == 2 ? Colors.blue : Colors.grey;
-  }
-
-  @override
-  Text getText() {
-    return Text("1");
-  }
-}
-
-class DrawCircleButton extends CircleButton {
-  DrawCircleButton(GestureTapCallback onTap, Bet bet)
-      : super(onTap: onTap, bet: bet);
-
-  @override
-  Color getColor() {
-    return bet != null && bet.bet == 0 ? Colors.blue : Colors.grey;
-  }
-
-  @override
-  Text getText() {
-    return Text("2");
-  }
-}
-
-class CreateButton extends StatelessWidget {
-  final Function onTap;
-  final Map bets;
-  final int estAmount;
-
-  CreateButton({this.onTap, this.bets, this.estAmount});
-
-  Function validateButton() {
-    if (bets.isNotEmpty && bets.length > 3)
-      return () {
-        onTap();
-      };
-    else
-      return null;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return Container(
-        height: 60,
-        width: MediaQuery.of(context).size.width,
-        child: RaisedButton(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Text("Create"),
-              Text("Min Match : " + bets.length.toString() + " / 4"),
-              Text("Est Amount: " + estAmount.toString())
-            ],
-          ),
-          color: Colors.blue,
-          onPressed: validateButton(),
-        ));
   }
 }
